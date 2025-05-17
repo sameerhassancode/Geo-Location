@@ -26,7 +26,8 @@ Capture visitor geolocation and browser info — built for ethical research and 
    git clone https://github.com/sameerhassancode/Geo-Location
    cd Geo-Location
 
-##Install dependencies:
+#Install dependencies:
+```bash
    pip install -r requirements.txt
 
 🧰 Installation & Usage
@@ -34,7 +35,7 @@ Follow these steps to set up and run the Location Grabber Tool on your local mac
 
 ✅ 1. Clone the repository
 bash
-git clone https://github.com/your-username/location-grabber-tool.git
+git clone https://github.com/sameerhassancode/Geo-Location.git
 cd location-grabber-tool
 ✅ 2. Install dependencies
 bash

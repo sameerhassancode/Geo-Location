@@ -43,7 +43,7 @@ You’re now ready to generate tracking links and capture data!
 ## 📸 Screenshots
 
 ### 🔍 Dashboard Preview
-![Dashboard Screenshot](screenshots/d1.png)
+![Dashboard Screenshot](screenshots/1.png)
 ### 🔍 Select Option
 ![Dashboard Screenshot](screenshots/2.png)
 ### 🔍 Copy auth token | Ngrok Preview

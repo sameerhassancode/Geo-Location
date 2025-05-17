@@ -29,7 +29,6 @@ Capture visitor geolocation and browser info — built for ethical research and 
    cd Geo-Location
 3. **Install the requriments:**
    ```bash
-```bash
    pip install -r requirements.txt
 
 🧰 Installation & Usage

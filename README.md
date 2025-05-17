@@ -39,3 +39,20 @@ Follow these steps to set up and run the Location Grabber Tool on your local mac
    ```bash
    http://127.0.0.1:5000
 You’re now ready to generate tracking links and capture data!
+
+## 📸 Screenshots
+
+### 🔍 Dashboard Preview
+![Dashboard Screenshot](screenshots/d1.png)
+### 🔍 Select Option
+![Dashboard Screenshot](screenshots/2.png)
+### 🔍 Copy auth token | Ngrok Preview
+![Dashboard Screenshot](screenshots/3.png)
+### 🔍 paste token Preview
+![Dashboard Screenshot](screenshots/4.png)
+### 🔍 Add link and click generate Preview
+![Dashboard Screenshot](screenshots/5.png)
+### 🔍 Victim Preview
+![Dashboard Screenshot](screenshots/6.png)
+
+

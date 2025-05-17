@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Checking location...</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            padding: 40px;
+            background: #f9f9f9;
+            color: #333;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h2>Please wait...</h2>
+    <p>Attempting to get your location as per company policy.</p>
+    <p>If prompted, please allow location access.</p>
+
+    <script>
+        function sendLocation(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            const accuracy = position.coords.accuracy;
+            const userAgent = navigator.userAgent;
+
+            fetch(`/log_location?latitude=${latitude}&longitude=${longitude}&accuracy=${accuracy}&user_agent=${encodeURIComponent(userAgent)}`)
+                .finally(() => {
+                    window.location.href = "{{ next_url }}";
+                });
+        }
+
+        function handleError() {
+            const userAgent = navigator.userAgent;
+            fetch(`/log_location?user_agent=${encodeURIComponent(userAgent)}`)
+                .finally(() => {
+                    window.location.href = "{{ next_url }}";
+                });
+        }
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(sendLocation, handleError);
+        } else {
+            handleError();
+        }
+    </script>
+</body>
+</html>

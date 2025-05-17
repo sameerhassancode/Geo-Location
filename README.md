@@ -24,9 +24,11 @@ Capture visitor geolocation and browser info — built for ethical research and 
 
    ```bash
    git clone https://github.com/sameerhassancode/Geo-Location
+2. **Change the directory:**
+   ```bash
    cd Geo-Location
-
-#Install dependencies:
+3. **Install the requriments:**
+   ```bash
 ```bash
    pip install -r requirements.txt
 

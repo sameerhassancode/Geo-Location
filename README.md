@@ -17,6 +17,8 @@ Capture visitor geolocation and browser info — built for ethical research and 
 - `pip` package manager
 
 ---
+🧰 Installation & Usage
+Follow these steps to set up and run the Location Grabber Tool on your local machine:
 
 ## 🛠️ Setup Instructions
 
@@ -30,22 +32,10 @@ Capture visitor geolocation and browser info — built for ethical research and 
 3. **Install the requriments:**
    ```bash
    pip install -r requirements.txt
-
-🧰 Installation & Usage
-Follow these steps to set up and run the Location Grabber Tool on your local machine:
-
-✅ 1. Clone the repository
-bash
-git clone https://github.com/sameerhassancode/Geo-Location.git
-cd location-grabber-tool
-✅ 2. Install dependencies
-bash
-pip install -r requirements.txt
-
-✅ 3. Run the Flask application
-bash
-python app.py
-
-✅ 4. Open the application in your browser
-http://127.0.0.1:5000
+4. **Start the Tool:**
+   ```bash
+   python app.py
+5. **Open the link in browser:**
+   ```bash
+   http://127.0.0.1:5000
 You’re now ready to generate tracking links and capture data!
